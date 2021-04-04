@@ -2,8 +2,10 @@ const express = require('express');
 
 const app = express();
 
+app.use(express.static('public'));
+
 app.get('/', (req, res) => {
-  return res.json({ message: `It's ok` });
+  return res.sendFile(__dirname + "/views/index.html")
 });
 
 app.listen(3000, () => {
