@@ -1,12 +1,28 @@
 const express = require('express');
+const routes = require('./routes/routes');
+const exphbs = require('express-handlebars');
+const path = require('path');
 
 const app = express();
 
-app.use(express.static('public'));
+// ejs
+app.set('view engine', 'ejs');
 
-app.get('/', (req, res) => {
-  return res.sendFile(__dirname + "/views/index.html")
-});
+
+// handlebars
+// app.engine('hbs', exphbs({
+  //   extname: 'hbs',
+  //   defaultLayout: null,
+  //   layoutsDir: path.join(__dirname, 'views', 'hbs'),
+  //   partialsDir: path.join(__dirname, 'views', 'hbs'),
+  // }));
+  // app.set('view engine', 'hbs');
+  // app.set('views', path.join(__dirname, 'views', 'hbs'));
+  
+  app.use(express.static('public'));
+  
+  app.use(express.json());
+  app.use(routes);
 
 app.listen(3000, () => {
   console.log('Server is running in port: 3000');
