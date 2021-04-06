@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const { redirect } = require('statuses');
 
 const routes = express.Router();
 
@@ -19,6 +20,25 @@ const Profile = {
     index(req, res) {
       return res.render(path.join(basePath, '/profile.ejs'), { profile : Profile.data });
     },
+    update(req, res) {
+      const data = req.body;
+
+      const weeksPerYear = 52;
+      const weeksPerMonth = (weeksPerYear - Profile.data['vacation-per-year']) / 12;
+      const weekTotalHours = data["hours-per-day"] * data["days-per-week"];
+
+      const monthlyTotalHours = weekTotalHours * weeksPerMonth;
+
+      const valueHour = data["monthly-budget"] / monthlyTotalHours;
+
+      Profile.data = {
+        ...Profile.data,
+        ...req.body,
+        "value-hour": valueHour
+      };
+
+      return res.redirect('/profile')
+    }
   }
 }
 
@@ -107,6 +127,7 @@ routes.post('/job', Job.controllers.create);
 routes.get('/job/edit', Job.controllers.editForm);
 
 routes.get('/profile', Profile.controllers.index);
+routes.post('/profile', Profile.controllers.update);
 
 
 
