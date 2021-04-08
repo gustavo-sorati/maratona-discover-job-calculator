@@ -7,19 +7,34 @@ const server = express();
 
 
 // ejs
-server.set('view engine', 'ejs');
+// server.set('view engine', 'ejs');
 
 
 // handlebars
-// server.engine('hbs', exphbs({
-  //   extname: 'hbs',
-  //   defaultLayout: null,
-  //   layoutsDir: path.join(__dirname, 'views', 'hbs'),
-  //   partialsDir: path.join(__dirname, 'views', 'hbs'),
-  // }));
-  // server.set('view engine', 'hbs');
-  // server.set('views', path.join(__dirname, 'views', 'hbs'));
-  
+server.engine('hbs', exphbs({
+    extname: 'hbs',
+    defaultLayout: null,
+    layoutsDir: path.join(__dirname, 'views', 'hbs'),
+    partialsDir: path.join(__dirname, 'views', 'hbs', 'partials'),
+    helpers: {
+      toFixed: function(value, ext) {
+          return value.toFixed(ext);
+      },
+      replace: function(value, ini, fin) {
+          return value.replace(ini, fin)
+      },
+      ifCond: function(value, check, options){
+        if(value === check.toString()) {
+          return options.fn(this);
+        }
+        return options.inverse(this);
+      }
+    }
+}));
+
+  server.set('view engine', 'hbs');
+  server.set('views', path.join(__dirname, 'views', 'hbs'));
+
   server.use(express.static('public'));
   server.use(express.urlencoded({ extended: true }));
   server.use(routes);

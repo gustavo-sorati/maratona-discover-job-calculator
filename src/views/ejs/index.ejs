@@ -74,7 +74,7 @@
 
       <div class="cards">
         <% jobs.forEach((job)=> { %>
-          <div class="card <%= job.status %> " data-id="1">
+          <div class="card <%= job.status %> " data-id="<%= job.id %>">
             <div class="id column">
               <%= job.id %>
             </div>
@@ -101,7 +101,7 @@
             </div>
             <div class="actions column flex">
               <p class="sr-only">Ações</p>
-              <a href="job/edit" class="button white edit" title="Editar Job">
+              <a href="job/edit/<%= job.id %>" class="button white edit" title="Editar Job">
                 <img src="/images/edit-24.svg" alt="Editar Job" />
               </a>
               <button class="delete button white" title="Excluir Job">
@@ -130,6 +130,7 @@
         <button class="button red" type="submit" form="delete-job">Excluir Job</button>
       </footer>
     </div>
+
     <form method="post" action="/job/delete" id="delete-job"></form>
   </div>
   <!-- end modal-wrapper -->
