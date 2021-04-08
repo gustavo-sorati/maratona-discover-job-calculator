@@ -1,48 +1,8 @@
 const express = require('express');
-const path = require('path');
-const { redirect } = require('statuses');
+
+const ProfileController = require('../controllers/ProfileController');
 
 const routes = express.Router();
-
-// EJS ROUTES
-// Caso queira usar por padrão o template ejs descomente tocódigo abaixo
-const Profile = {
-  data: {
-    name: 'Gustavo Sorati',
-    avatar: 'https://github.com/gustavo-sorati.png',
-    "monthly-budget": 3000,
-    "days-per-week": 10,
-    "hours-per-day": 5,
-    "vacation-per-year": 4,
-    "value-hour": 75
-  },
-  controllers: {
-    index(req, res) {
-      return res.render('profile', { profile: Profile.data });
-    },
-    update(req, res) {
-      const data = req.body;
-
-      // Definir quantas semanas tem um ano: 52
-      const weeksPerYear = 52;
-
-      const weeksPerMonth = (weeksPerYear - Profile.data['vacation-per-year']) / 12;
-      const weekTotalHours = data["hours-per-day"] * data["days-per-week"];
-
-      const monthlyTotalHours = weekTotalHours * weeksPerMonth;
-
-      const valueHour = data["monthly-budget"] / monthlyTotalHours;
-
-      Profile.data = {
-        ...Profile.data,
-        ...req.body,
-        "value-hour": valueHour
-      };
-
-      return res.redirect('/profile');
-    }
-  }
-}
 
 const Job = {
   data: [
@@ -334,7 +294,7 @@ routes.get('/job/:id/edit', Job.controllers.show);
 routes.post('/job/:id/edit', Job.controllers.update);
 routes.post('/job/:id/delete', Job.controllers.delete);
 
-routes.get('/profile', Profile.controllers.index);
-routes.post('/profile', Profile.controllers.update);
+routes.get('/profile', ProfileController.index);
+routes.post('/profile', ProfileController.update);
 
 module.exports = routes;
