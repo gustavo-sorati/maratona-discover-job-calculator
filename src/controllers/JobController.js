@@ -1,81 +1,93 @@
-export default Job = {
-  controllers: {
-    index(req, res) {
-      const updatedJobs = Job.data.map(job => {
-        const remaining = Job.services.remainingDays(job);
-        const status = remaining <= 0 ? 'done' : 'progress';
+const Job = require('../models/Job');
+const Profile = require('../models/Profile');
 
-        return {
-          ...job,
-          remaining,
-          status,
-          budget: Job.services.calculateBudget(job, Profile.data['value-hour'])
-        };
-      })
+const JobUtils = require('../utils/JobUtils');
 
-      return res.render('index', {
-        jobs: updatedJobs
-      })
-    },
-    create(req, res) {
-      const job = req.body;
-      let id;
+module.exports = {
+  index(req, res) {
+    const jobs = Job.get();
+    const profile = Profile.get();
 
-      if (Job.data.length > 0)
-        id = Job.data[Job.data.length - 1].id + 1;
-      else
-        id = 1;
+    const updatedJobs = jobs.map(job => {
+      const remaining = JobUtils.remainingDays(job);
+      const status = remaining <= 0 ? 'done' : 'progress';
 
-      Job.data.push({
-        id,
+      return {
         ...job,
-        created_at: Date.now(),
-      });
+        remaining,
+        status,
+        budget: JobUtils.calculateBudget(job, profile['value-hour'])
+      };
+    })
 
-      return res.redirect('/');
-    },
-    save(req, res) {
-      return res.render('job');
-    },
-    show(req, res) {
-      const { id } = req.params;
+    return res.render('index', { jobs: updatedJobs });
+  },
+  create(req, res) {
+    return res.render('job');
+  },
+  save(req, res) {
+    const jobs = Job.get();
 
-      const job = Job.data.find(job => job.id === Number(id));
+    const job = req.body;
+    let lastId;
 
-      if (!job) return res.send('Job not found!');
+    if (jobs.length > 0)
+      lastId = jobs[jobs.length - 1].id;
+    else
+      lastId = 0;
 
-      job.budget = Job.services.calculateBudget(job, Profile.data['value-hour']);
+    jobs.push({
+      id: lastId + 1,
+      ...job,
+      created_at: Date.now(),
+    });
 
-      return res.render('job-edit', { job });
-    },
-    update(req, res) {
-      const { id } = req.params;
+    return res.redirect('/');
+  },
+  show(req, res) {
+    const jobs = Job.get();
 
-      const job = Job.data.find(job => job.id === Number(id));
+    const {id} = req.params;
 
-      if (!job) return res.send('Job not found!');
+    const job = jobs.find(job => job.id === Number(id));
 
-      const updatedJob = {
-        ...job,
-        name: req.body.name,
-        "daily-hours": req.body["daily-hours"],
-        "total-hours": req.body["total-hours"],
-      }
+    if (!job) return res.send('Job not found!');
 
-      Job.data = Job.data.map(job => {
-        if(job.id === Number(id)) job = updatedJob;
+    const profile = Profile.get();
+    job.budget = JobUtils.calculateBudget(job, profile['value-hour']);
 
-        return job
-      });
+    return res.render('job-edit', { job });
+  },
+  update(req, res) {
+    const jobs = Job.get();
+    const {id} = req.params;
 
-      res.redirect(`/job/${id}/edit`);
-    },
-    delete(req, res) {
-      const { id } = req.params;
+    const job = jobs.find(job => job.id === Number(id));
 
-      Job.data = Job.data.filter(job => job.id !== Number(id));
+    if (!job) return res.send('Job not found!');
 
-      return res.redirect('/');
+    const updatedJob = {
+      ...job,
+      name: req.body.name,
+      "daily-hours": req.body["daily-hours"],
+      "total-hours": req.body["total-hours"],
     }
+
+    const newJobs = jobs.map(job => {
+      if (job.id === Number(id)) job = updatedJob;
+
+      return job;
+    });
+
+    Job.update(newJobs);
+
+    res.redirect(`/job/${id}/edit`);
+  },
+  delete(req, res) {
+    const {id} = req.params;
+
+    Job.delete(id);
+
+    return res.redirect('/');
   }
 }
