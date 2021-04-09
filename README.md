@@ -1,10 +1,13 @@
 <h1 align="center">
-  <img alt="JobsCalc" title="JobsCalc" src="https://i.imgur.com/Veqm7Gh.png" width="220px" />
+  <img alt="JobsCalc" src=".github/background.gif" />
 </h1>
+
+  <img alt="JobsCalc" title="JobsCalc" src="https://i.imgur.com/Veqm7Gh.png" width="220px" />
 
 <p align="center">
   <a href="#-tecnologias">Tecnologias</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#-projeto">Projeto</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#-como-usar">Como usar</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#-layout">Layout</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#memo-licença">Licença</a>
 </p>
@@ -30,12 +33,31 @@ Esse projeto foi desenvolvido com as seguintes tecnologias:
 - JavaScript
 - NodeJS
 - EJS
+- Handlebars
 - Express
 - SQLite
 
 ## 💻 Projeto
 
 O JobsCalc é uma aplicação de estimativa de cálculo para projetos freelancer, onde é possível cadastrar e excluir jobs (projetos), obtendo uma estimativa de custo de cada job. Além disso, é possível traçar o valor da hora da pessoa que estará usando o sistema 💰
+
+## ☄ Como usar
+
+Inicialmente o projeto está utilizando a template-engine handlebars, mas essa configuração é facilmente alternada para o `.ejs`, mudando no arquivo `package.json`, a opção "main", como mostrado abaixo.
+
+=> Para usar .ejs como template-engine
+
+```json
+"main": "src/server.ejs.js",
+```
+
+=> Para usar .hbs como template-engine
+
+```json
+"main": "src/server.hbs.js",
+```
+
+Após isso executar o script `npm run dev:server`.
 
 ## 🔖 Layout
 
@@ -48,3 +70,7 @@ Esse projeto está sob a licença MIT. Veja o arquivo [LICENSE](.github/LICENSE.
 ---
 
 Feito com ♥ by Rocketseat :wave: [Participe da nossa comunidade!](https://discordapp.com/invite/gCRAFhc)
+
+```
+
+```

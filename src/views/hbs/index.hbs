@@ -31,12 +31,13 @@
         <img id="logo" src="/images/logo.svg" alt="Logo" />
         <span id="notification">
           <img src="/images/alert-octagon.svg" alt="Alerta" />
-          Você tem 2 horas livres no seu dia
-        </span>
-        <a href="profile" id="avatar-profile">
-          <p>Jakeliny <span>Ver perfil</span></p>
-          <img src="https://avatars.githubusercontent.com/u/17316392?s=460&u=6912a91a70bc89745a2079fdcdad3bc3ce370f13&v=4" />
-        </a>
+
+
+          {{#switch freeHours '<=' 0}} {{#case '<=' }} Teste 1 {{/case}} {{#default 'other' }} erro {{/default}} {{/switch}} </span>
+            <a href="profile" id="avatar-profile">
+              <p>{{ profile.name }}<span>Ver perfil</span></p>
+              <img src="{{profile.avatar}}" />
+            </a>
       </section>
 
       <div class="separator"></div>
