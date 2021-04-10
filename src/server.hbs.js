@@ -17,38 +17,19 @@ server.engine('hbs', exphbs({
     replace: function (value, ini, fin) {
       return value.replace(ini, fin)
     },
-    ifCond: function (value, operator, check, options) {
+    ifCond: function (value, check, options) {
       if (value === check.toString()) {
         return options.fn(this);
       }
       return options.inverse(this);
     },
-    switch: function(value, operator, compare, options){
-      switch (operator) {
-        case '==':
-            return (value == compare) ? options.fn(this) : options.inverse(this);
-        case '===':
-            return (value === compare) ? options.fn(this) : options.inverse(this);
-        case '!=':
-            return (value != compare) ? options.fn(this) : options.inverse(this);
-        case '!==':
-            return (value !== compare) ? options.fn(this) : options.inverse(this);
-        case '<':
-            return (value < compare) ? options.fn(this) : options.inverse(this);
-        case '<=':
-            return (value <= compare) ? options.fn(this) : options.inverse(this);
-        case '>':
-            return (value > compare) ? options.fn(this) : options.inverse(this);
-        case '>=':
-            return (value >= compare) ? options.fn(this) : options.inverse(this);
-        case '&&':
-            return (value && compare) ? options.fn(this) : options.inverse(this);
-        case '||':
-            return (value || compare) ? options.fn(this) : options.inverse(this);
-        default:
-            return options.inverse(this);
-    }
-    }
+    ifCondMenorIgual: function (value, check, options) {
+      if (value < check) {
+        return options.fn(this);
+      } else {
+        return options.inverse(this);
+      }
+    },
   }
 }));
 server.set('view engine', 'hbs');

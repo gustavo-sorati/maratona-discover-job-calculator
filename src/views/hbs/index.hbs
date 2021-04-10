@@ -32,12 +32,17 @@
         <span id="notification">
           <img src="/images/alert-octagon.svg" alt="Alerta" />
 
+          {{#ifCondMenorIgual freeHours 0}}
+          Você não tem horas livres
+          {{ else }}
+          Você tem {{freeHours}} horas livres no seu dia
+          {{/ifCondMenorIgual}}
 
-          {{#switch freeHours '<=' 0}} {{#case '<=' }} Teste 1 {{/case}} {{#default 'other' }} erro {{/default}} {{/switch}} </span>
-            <a href="profile" id="avatar-profile">
-              <p>{{ profile.name }}<span>Ver perfil</span></p>
-              <img src="{{profile.avatar}}" />
-            </a>
+        </span>
+        <a href="profile" id="avatar-profile">
+          <p>{{ profile.name }}<span>Ver perfil</span></p>
+          <img src="{{profile.avatar}}" />
+        </a>
       </section>
 
       <div class="separator"></div>
@@ -47,15 +52,15 @@
 
         <div class="info">
           <div class="total">
-            <strong>12</strong>
+            <strong>{{statusCount.total}}</strong>
             Projetos ao total
           </div>
           <div class="in-progress">
-            <strong>7</strong>
+            <strong>{{statusCount.progress}}</strong>
             Em andamento
           </div>
           <div class="finished">
-            <strong>4</strong>
+            <strong>{{statusCount.done}}</strong>
             Encerrados
           </div>
         </div>
@@ -82,13 +87,14 @@
           </div>
           <div class="deadline column">
             <span>Prazo</span>
-            <p>{{remaining}}</p>
+            <p>{{remaining}} dia para a entrega</p>
           </div>
           <div class="amount column">
             <span>Valor</span>
             <p>{{replace (toFixed budget 2) "." ","}}</p>
           </div>
           <div class="status badge column ">
+
             {{#ifCond status 'done'}}
             Encerrado
             {{else}}
