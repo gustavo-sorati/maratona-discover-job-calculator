@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img alt="JobsCalc" src=".github/background.gif" />
+  <img alt="JobsCalc" src="public/images/background.gif" />
 </h1>
 
   <img alt="JobsCalc" title="JobsCalc" src="https://i.imgur.com/Veqm7Gh.png" width="220px" />
@@ -21,7 +21,7 @@
 <br>
 
 <p align="center">
-  <img alt="dev.finances" src=".github/jobscalc.png" width="100%">
+  <img alt="dev.finances" src="public/images/jobscalc.png" width="100%">
 </p>
 
 ## 🚀 Tecnologias
